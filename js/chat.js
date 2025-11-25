@@ -167,7 +167,6 @@ async function sendMessage(){
   body: JSON.stringify({ message: txt }),
 });
   // ✅ Send only user message
-    });
 
     const data = await res.json();
     reply = data.reply && data.reply !== "..." ? data.reply : null;
