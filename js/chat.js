@@ -5,6 +5,8 @@ let voiceOn = true;
 
 document.addEventListener("DOMContentLoaded", () => {
   // Elements
+  // Change this to your live backend URL
+const API_BASE = "https://neetho.vercel.app";
   const chatListEl   = document.getElementById('chatList');
   const messagesEl   = document.getElementById('messages');
   const chatNameEl   = document.getElementById('chatName');
@@ -159,10 +161,12 @@ async function sendMessage(){
   // 3. Try HuggingFace API response through backend
   let reply = "";
   try {
-    const res = await fetch("http://localhost:5000/api/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: txt })  // ✅ Send only user message
+    const res = await fetch(`${API_BASE}/api/chat`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ message: txt }),
+});
+  // ✅ Send only user message
     });
 
     const data = await res.json();
