@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>NeeTho — Your Quiet Corner</title>
+
+  <!-- Main Styles -->
+  <link rel="stylesheet" href="css/chat.css" />
+  <link rel="stylesheet" href="css/motion.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Background Layer -->
+  <div class="bg-layer">
+    <div class="bg-gradient"></div>
+    <canvas id="rainCanvas"></canvas>
+  </div>
+
+  <!-- App Shell -->
+  <div class="app-frame fade-in">
+    <header class="top-bar">
+      <div class="brand">
+        <div class="brand-mark">N</div>
+        <div class="brand-text">
+          <div class="brand-name">NeeTho</div>
+          <div class="brand-tagline">Private space for your feelings.</div>
+        </div>
+      </div>
+      <div class="top-status">
+        <div class="top-chip">
+          <span class="top-dot"></span>
+          <span>Local only</span>
+        </div>
+        <div class="top-chip soft">Dark · Calm</div>
+      </div>
+    </header>
+
+    <div class="app-grid">
+      <!-- SIDEBAR -->
+      <aside class="sidebar card">
+        <div class="sidebar-top">
+          <div class="me">
+            <div class="me-avatar" id="meAvatar">🙂</div>
+            <div>
+              <div class="me-name" id="meName">You</div>
+              <div class="me-sub muted">Your private friend groups</div>
+            </div>
+          </div>
+          <div class="sidebar-actions">
+            <button id="btnNew" class="btn small" title="New Friend Group">+ Friend</button>
+            <button id="btnSettings" class="btn small ghost" title="Settings">⚙</button>
+          </div>
+        </div>
+
+        <div class="search-area">
+          <input id="searchInput" placeholder="Search friends..." />
+        </div>
+
+        <div id="chatList" class="chat-list" aria-live="polite"></div>
+
+        <div class="sidebar-foot muted">
+          <small>🔒 Everything is saved only in this browser. No servers, no accounts, just you and NeeTho.</small>
+        </div>
+      </aside>
+
+      <!-- CHAT PANEL -->
+      <main class="chat-panel card">
+        <header class="chat-header">
+          <div class="chat-header-left">
+            <div class="chat-avatar" id="chatAvatar">👥</div>
+            <div>
+              <div id="chatName" class="chat-name">Select a friend</div>
+              <div id="chatSub" class="chat-sub">Choose a friend group from the left to start talking.</div>
+            </div>
+          </div>
+          <div class="chat-header-right">
+            <button id="btnExport" class="btn small ghost" title="Export JSON">Export</button>
+            <button id="btnDelete" class="btn small danger" title="Delete this friend group">Delete</button>
+          </div>
+        </header>
+
+        <section id="messages" class="messages">
+          <div class="empty-state center">
+            <div class="empty-inner">
+              <div class="empty-icon">🌙</div>
+              <div class="empty-title">No friend selected yet</div>
+              <div class="empty-sub muted">
+                Create a friend from the left and type how you really feel. <b>NeeTho</b> listens quietly.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="composer">
+          <button id="micBtn" class="mic-btn" title="Voice (Chrome)">
+            🎤
+          </button>
+          <textarea id="inputText" placeholder="Type how you feel…"></textarea>
+          <button id="sendBtn" class="send-btn" title="Send">
+            ➤
+          </button>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <!-- NEW GROUP MODAL -->
+  <div id="modalNew" class="modal" style="display:none">
+    <div class="modal-card">
+      <h3>Create new friend group</h3>
+      <p class="modal-sub">Give a name + emoji for this space. Each friend group holds a separate thread.</p>
+
+      <div class="form-row">
+        <label class="lbl">Friend / Group name</label>
+        <input id="newName" class="input" placeholder="e.g., My Circle, 3AM People" />
+
+        <div class="lbl" style="margin-top:8px">Friend avatar</div>
+        <div class="avatar-choices">
+          <button class="ava-btn selected" data-emoji="👥">👥</button>
+          <button class="ava-btn" data-emoji="🙂">🙂</button>
+          <button class="ava-btn" data-emoji="🫶">🫶</button>
+          <button class="ava-btn" data-emoji="🌙">🌙</button>
+          <button class="ava-btn" data-emoji="💙">💙</button>
+          <button class="ava-btn" data-emoji="🔥">🔥</button>
+          <button class="ava-btn" data-emoji="✨">✨</button>
+          <button class="ava-btn" data-emoji="🧿">🧿</button>
+        </div>
+
+        <div class="modal-actions">
+          <button id="modalCancel" class="btn ghost">Cancel</button>
+          <button id="modalCreate" class="btn primary">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS MODAL -->
+  <div id="modalSettings" class="modal" style="display:none">
+    <div class="modal-card">
+      <h3>⚙ Settings</h3>
+      <p class="modal-sub">These actions only affect this browser on this device.</p>
+
+      <button id="btnClearAll" class="btn full danger" style="margin:6px 0">
+        🗑 Clear ALL (friends + messages)
+      </button>
+      <button id="btnClearChats" class="btn full" style="margin:6px 0">
+        🧹 Clear ONLY messages (keep friend groups)
+      </button>
+      <button id="btnToggleVoice" class="btn full" style="margin:6px 0">
+        🔊 Toggle Voice Replies
+      </button>
+      <button id="btnCloseSettings" class="btn full primary" style="margin-top:10px">
+        Close
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts (order matters) -->
+  <script src="js/storage.js"></script>
+  <script src="js/responses.js"></script>
+  <script src="js/chat.js"></script>
+</body>
+</html>
